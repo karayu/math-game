@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "testing-cuttlefish",
+    "default": "testing-squid"
+  }
+}

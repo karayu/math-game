@@ -1,0 +1,199 @@
+<!doctype html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Demonstrates the use of Google Cloud Database with a Firebase DB">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Are you good at second grade math?</title>
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Firebase Database Quickstart">
+  <meta name="theme-color" content="#303F9F">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Firebase Database Quickstart">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+  <!-- Tile icon for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+  <meta name="msapplication-navbutton-color" content="#303F9F">
+
+  <!-- Material Design Lite -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-orange.min.css">
+  <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+  <link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+
+  <!-- Splash screen -->
+  <section id="page-splash">
+    <h3 class="logo">Arithmetic Game</h3>
+    <div>
+      <button id="sign-in-button" class="mdl-button--raised mdl-button mdl-js-button mdl-js-ripple-effect"><i class="material-icons">account_circle</i> Sign in with Google</button>
+    </div>
+  </section>
+
+  <!-- Header section containing logo and menu -->
+  <header class="header mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+
+    <div class="mdl-layout__header-row titlebar">
+      <h3 class="logo">Arithmetic Game</h3>
+      <!-- TODO: show avatar image next to sign out button -->
+      <div class="avatar"></div>
+      <div class="username mdl-color-text--black"></div>
+
+      <button id="sign-out-button" class="mdl-button--raised mdl-button mdl-js-button mdl-js-ripple-effect"><i class="material-icons">account_circle</i> Sign out</button>
+    </div>
+
+  </header>
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+
+
+    <section class="content" id="start-game-page" style="">
+      <div class="vertical-spacer center"></div>
+      <div class="mdl-grid center">
+        <h2>Ready?</h2>
+      </div>
+      <div class="mdl-grid center">
+        <h3>Click below to start new game</h3>
+      </div>
+      <div class="mdl-grid center">
+        <button id="start-button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+          START NEW GAME
+        </button>
+      </div>
+    </section>
+  
+    <!-- Show the add post form -->
+    <section class="mdl-grid content" id="add-result" style="display:none">
+      <div class="mdl-cell mdl-cell--12-col mdl-grid center">
+
+          <!-- Card containing the inputs for the new gaem -->
+          <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet
+                  mdl-cell--6-col-desktop">
+            <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+              <h2 class="mdl-card__title-text">Enter the result</h2>
+            </div>
+            
+            <!-- show the input numbers in a row -->
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--4-col center">
+                <h2 id="input-one" class="input-number">5</h2>
+              </div>
+              <div class="mdl-cell mdl-cell--4-col center">
+                <h2 id="operator" class="operator">+</h2>
+              </div>
+              <div class="mdl-cell mdl-cell--4-col center">
+                <h2 id="input-two" class="input-number">6</h2>
+              </div>
+            </div>
+          
+            <!-- show the equals sign -->
+            <div class="equals-sign">
+              <h2 id="equals-sign" class="center">=</h2>
+            </div>
+            
+            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+              <form id="message-form" action="#">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="result">
+                  <label class="mdl-textfield__label" for="new-post-title">enter result...</label>
+                </div>
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                  Enter
+                </button>
+              </form>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Show the answer result -->
+    <section class="mdl-grid content" id="game-result-page" style="display:none">
+      <div class="mdl-cell mdl-cell--12-col mdl-grid center">
+        
+        <!-- card showing result status -->
+        <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet
+                mdl-cell--6-col-desktop">
+          <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+            <h2 class="mdl-card__title-text">Your result</h2>
+          </div>
+
+          <!-- Tell the user whether answer was right. TODO: change color based on
+          answer correctness -->
+          <h2 id="correct-status" class="success-status center"></h2>
+  
+          <!-- show the input numbers in a row -->
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--4-col center">
+              <h2 id="result-input-one" class="input-number">5</h2>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col center">
+              <h2 id="operator" class="operator">+</h2>
+            </div>
+            <div class="mdl-cell mdl-cell--4-col center">
+              <h2 id="result-input-two" class="input-number">6</h2>
+            </div>
+          </div>
+        
+          <!-- show the equals sign -->
+          <div class="equals-sign">
+            <h2 class="center">=</h2>
+          </div>
+          
+          
+          <div class="entered-result center">
+            <h2 id="user-result" class="typo-styles__demo mdl-typography--display-3">10</h2>
+          </div>
+
+          <div class="center">
+            <h5 id="user-time" class="">10</h5>
+          </div>
+
+        
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Import the google image search api -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<!-- Import and configure the Firebase SDK -->
+<!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
+<!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
+<script src="/__/firebase/3.9.0/firebase-app.js"></script>
+<script src="/__/firebase/3.9.0/firebase-auth.js"></script>
+<script src="/__/firebase/3.9.0/firebase-database.js"></script>
+<script src="/__/firebase/init.js"></script>
+
+
+<script src="scripts/main.js"></script>
+</body>
+</html>
