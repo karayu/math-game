@@ -38,10 +38,14 @@ a {
 .right-answer {
   font-style: bold;
   color: #4CAF50;
+  justify-content: center;
+  display: flex;
 }
 .wrong-answers {
   font-style: bold;
   color: rgb(255, 152, 0);
+  justify-content: center;
+  display: flex;
 }
 .mdl-card {
     display: block;
