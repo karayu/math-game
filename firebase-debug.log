@@ -1,0 +1,33 @@
+[debug] [2019-10-08T20:46:24.528Z] ----------------------------------------------------------------------
+[debug] [2019-10-08T20:46:24.530Z] Command:       /Users/karay/.nvm/versions/node/v8.14.0/bin/node /Users/karay/.nvm/versions/node/v8.14.0/bin/firebase serve
+[debug] [2019-10-08T20:46:24.531Z] CLI Version:   7.5.0
+[debug] [2019-10-08T20:46:24.531Z] Platform:      darwin
+[debug] [2019-10-08T20:46:24.531Z] Node Version:  v8.14.0
+[debug] [2019-10-08T20:46:24.531Z] Time:          Tue Oct 08 2019 13:46:24 GMT-0700 (PDT)
+[debug] [2019-10-08T20:46:24.531Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-10-08T20:46:24.538Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-10-08T20:46:24.538Z] > authorizing via signed-in user
+[debug] [2019-10-08T20:46:24.538Z] [iam] checking project testing-cuttlefish for permissions ["firebase.projects.get"]
+[debug] [2019-10-08T20:46:24.539Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/testing-cuttlefish:testIamPermissions  
+
+[debug] [2019-10-08T20:46:24.894Z] <<< HTTP RESPONSE 200
+[debug] [2019-10-08T20:46:24.895Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/testing-cuttlefish  
+ 
+[debug] [2019-10-08T20:46:25.081Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/karay/projects/math-game'...
+[info] 
+[debug] [2019-10-08T20:46:25.086Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/testing-cuttlefish/webApps/-/config  
+ 
+[warn] ⚠  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[info] ✔  functions: Emulator started at http://localhost:5001
+[debug] [2019-10-08T20:46:26.897Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "/Users/karay/projects/math-game/functions" for Cloud Functions...
+[info] ✔  hosting: Local server: http://localhost:5000
+[debug] [2019-10-08T20:46:27.136Z] [runtime-status] Functions runtime initialized. {"cwd":"/Users/karay/projects/math-game/functions","node_version":"8.14.0"}
+[debug] [2019-10-08T20:46:27.136Z] [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-10-08T20:46:27.140Z] [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"5.4.2","resolution":"/Users/karay/projects/math-game/functions/node_modules/firebase-admin/lib/index.js"}
+[warn] ⚠  The Cloud Functions emulator requires the module "firebase-admin" to be version >8.0.0 so your version is too old. You can probably fix this by running "npm install firebase-admin@latest" in your functions directory.
+[info] i  functions: Your functions could not be parsed due to an issue with your node_modules (see above)
