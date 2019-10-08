@@ -30,6 +30,7 @@ var signOutButton = document.getElementById('sign-out-button');
 var splashPage = document.getElementById('page-splash');
 var startGamePage = document.getElementById('start-game-page');
 var startButton = document.getElementById('start-button');
+var nextButton = document.getElementById('next-button');
 var inputOne = document.getElementById('input-one');
 var inputTwo = document.getElementById('input-two');
 var addPost = document.getElementById('add-result');
@@ -46,8 +47,8 @@ function generateNewInputs() {
   var inputTwo = Math.floor(Math.random()*10*playMode);
 
   //TO DO: make operation multiplication or addition
-  var operation; 
-  
+  var operation;
+
   gameInputs = {
     inputOne: inputOne,
     inputTwo: inputTwo,
@@ -64,9 +65,9 @@ function generateNewInputs() {
 //TODO: start timer rundown
 function createNewGame() {
   var inputs = generateNewInputs();
-  
+
   //Show the user the form for entering their answer (and populate with game
-  //values) 
+  //values)
   showSection(addPost);
   inputOne.innerHTML = inputs.inputOne;
   inputTwo.innerHTML = inputs.inputTwo;
@@ -74,12 +75,12 @@ function createNewGame() {
   //Create new game (with no user answers) and write it in the databases
   var newGameKey = firebase.database().ref().child('games').push().key;
 
-  //Add the initiated game to the game database 
+  //Add the initiated game to the game database
   var updates = {};
   updates['/posts/' + newGameKey] = inputs;
 
   //Add a listener to the answer submission form
-  //When form submits, update database and show the results page 
+  //When form submits, update database and show the results page
   answerForm.onsubmit = function(e) {
     e.preventDefault();
     var text = answerInput.value;
@@ -87,7 +88,7 @@ function createNewGame() {
     var inputTwoVal = inputTwo.innerHTML;
     var timestamp = Math.floor(Date.now()/1000);
     if (text) {
-      //add the user's answer to the database 
+      //add the user's answer to the database
       newPostForCurrentUser(newGameKey, inputOneVal, inputTwoVal, text).then(
         function() {
           //showGameResult(newGameKey, inputOneVal, inputTwoVal, text, timestamp);
@@ -110,15 +111,15 @@ function showGameResult(data) {
   document.getElementById('result-input-one').innerHTML = data.inputOne;
   document.getElementById('result-input-two').innerHTML = data.inputTwo;
   document.getElementById('user-result').innerHTML = data.userResult;
-    
+
   if(data.userResult && data.correctResult && (data.userResult == data.correctResult)) {
     //TODO: save correctness on server increment score or something?
     successStatus.innerHTML = "CORRECT";
     successStatus.className = "right-answer";
-  } 
+  }
   else {
-    successStatus.innerHTML = "WRONG"; 
-    successStatus.className = "wrong-answers"; 
+    successStatus.innerHTML = "WRONG";
+    successStatus.className = "wrong-answers";
   }
 
   document.getElementById('user-time').innerHTML = data.user_time;
@@ -134,14 +135,14 @@ function showGameResult(data) {
 // [START write_fan_out]
 // Write the results of a game
 function writeNewPost(uid, gameKey, username, inputOne, inputTwo, userResult) {
-  
+
   //retrieve previous start timestamp to compute how long user took
   var start_timestamp;
   firebase.database().ref('/posts/' + gameKey).once('value').then(function(snapshot) {
     var data = snapshot.val();
     start_timestamp = data.start_timestamp;
-  
-  
+
+
     // Get the user's data entry (result and time)
     var postData = {
       author: username,
@@ -156,7 +157,6 @@ function writeNewPost(uid, gameKey, username, inputOne, inputTwo, userResult) {
     console.log("new entry is: ");
     console.log(postData);
 
-    debugger;
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {};
     updates['/posts/' + gameKey] = postData;
@@ -210,7 +210,7 @@ function addCommentElement(postElement, id, text, author) {
 
 /**
  * Sets the comment's values in the given postElement.
- 
+
 function setCommentValues(postElement, id, text, author) {
   var comment = postElement.getElementsByClassName('comment-' + id)[0];
   comment.getElementsByClassName('comment')[0].innerText = text;
@@ -219,7 +219,7 @@ function setCommentValues(postElement, id, text, author) {
 
 /**
  * Deletes the comment of the given ID in the given postElement.
- 
+
 function deleteComment(postElement, id) {
   var comment = postElement.getElementsByClassName('comment-' + id)[0];
   comment.parentElement.removeChild(comment);
@@ -228,7 +228,7 @@ function deleteComment(postElement, id) {
 
 /**
  * Starts listening for new posts and populates posts lists.
- 
+
 function startDatabaseQueries() {
   // [START my_top_posts_query]
   var myUserId = firebase.auth().currentUser.uid;
@@ -240,7 +240,7 @@ function startDatabaseQueries() {
   var userPostsRef = firebase.database().ref('user-posts/' + myUserId);
 
   var fetchPosts = function(postsRef, sectionElement) {
-    postsRef.on('child_changed', function(data) {	
+    postsRef.on('child_changed', function(data) {
 		var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
 		var postElement = containerElement.getElementsByClassName('post-' + data.key)[0];
 		postElement.getElementsByClassName('mdl-card__title-text')[0].innerText = data.val().title;
@@ -290,6 +290,7 @@ function cleanupUi() {
   recentPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
   userPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
   */
+
 
   // Stop all currently listening Firebase listeners.
   listeningFirebaseRefs.forEach(function(ref) {
@@ -384,12 +385,20 @@ window.addEventListener('load', function() {
   // Listen for auth state changes
   firebase.auth().onAuthStateChanged(onAuthStateChanged);
 
-  
+
   startButton.onclick = function () {
     createNewGame();
     answerInput.value = '';
   }
-  
+
+  nextButton.onclick = function () {
+      // Remove previous game result
+      gameResultPage.style.display = 'none';
+      createNewGame();
+      answerInput.value = '';
+  }
+
+
   /*
   // Bind menu buttons.
   recentMenuButton.onclick = function() {
